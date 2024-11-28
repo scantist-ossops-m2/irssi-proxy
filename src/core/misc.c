@@ -756,8 +756,11 @@ int expand_escape(const char **data)
 		*data += 2;
 		return strtol(digit, NULL, 16);
 	case 'c':
-                /* control character (\cA = ^A) */
-                (*data)++;
+		/* check for end of string */
+		if ((*data)[1] == '\0')
+			return 0;
+		/* control character (\cA = ^A) */
+		(*data)++;
 		return i_toupper(**data) - 64;
 	default:
 		if (!i_isdigit(**data))
